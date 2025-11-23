@@ -62,7 +62,7 @@ const App: React.FC = () => {
           {/* Simple Footer */}
           <footer className="py-12 text-center text-gray-600 text-sm font-mono border-t border-gray-900">
             <p>GFG GHRCEMP © {new Date().getFullYear()}</p>
-            <p className="mt-2 text-xs">POWERED BY GEMINI 2.5 FLASH</p>
+            <p className="mt-2 text-xs">🦋 Proudly made by the Technical Team GFG GHRCEMP 🦋</p>
           </footer>
         </main>
       </div>

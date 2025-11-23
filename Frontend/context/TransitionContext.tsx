@@ -17,15 +17,16 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const textRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [label, setLabel] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
   
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const updateDimensions = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setDimensions({ width, height });
+      setIsMobile(width <= 768); // Simple mobile check
     };
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
@@ -39,7 +40,8 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
     const width = dimensions.width;
     const height = dimensions.height;
-    const curve = 300; 
+    // Disable curve on mobile by setting it to 0, otherwise standard 300
+    const curve = isMobile ? 0 : 300; 
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -55,8 +57,8 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
     gsap.set(overlayRef.current, { opacity: 1, pointerEvents: 'all' });
     gsap.set(pathRef.current, { attr: { d: startPath } });
-    // Prepare Text: Hidden initially
-    gsap.set(textRef.current, { y: 50, opacity: 0 });
+    // Prepare Text: Hidden initially - Move start position much lower to simulate being "pushed up" by the liquid
+    gsap.set(textRef.current, { y: 150, opacity: 0 });
 
     const progress = { value: 0 };
 
@@ -75,14 +77,14 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         pathRef.current?.setAttribute('d', d);
       }
     })
-    // Show Text FASTER: Appear earlier and faster
-    // Only start showing text after 20% of progress has passed (approximately 0.16s into the 0.8s animation)
+    // Show Text: Sync with the liquid rising
+    // It should start appearing as the liquid passes the middle
     .to(textRef.current, {
       y: 0,
       opacity: 1,
-      duration: 0.4, // Faster duration (was 0.5)
-      ease: 'power2.out'
-    }, "-=0.84") // Start at 20% mark of the 0.8s duration (0.8 * 0.8 = 0.64 remaining)
+      duration: 0.6,
+      ease: 'power3.out' // Matches liquid movement easing better
+    }, "-=0.2") // Offset adjusted to start after 60% coverage (roughly 0.2s before end)
 
     .call(callback)
 
@@ -101,13 +103,13 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         pathRef.current?.setAttribute('d', d);
       }
     })
-    // Hide Text FASTER: Hide quicker and earlier
+    // Hide Text FASTER: Disappear quickly while liquid is still high
     .to(textRef.current, {
-      y: -50,
+      y: -100, // Move UP further to look like it's carried away
       opacity: 0,
-      duration: 0.3, // Faster duration (was 0.4)
+      duration: 0.25, // Faster duration (was 0.3)
       ease: 'power2.in'
-    }, "-=0.8"); // Start hiding immediately as exit begins (kept same offset but faster duration ensures it finishes well before transition end)
+    }, "-=0.9"); // Start early in the exit phase
   };
 
   return (
@@ -126,12 +128,12 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           <path ref={pathRef} d="" />
         </svg>
         
-        {/* Transition Label */}
+        {/* Transition Label - Absolute Center */}
         <div 
           ref={textRef}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
         >
-          <h2 className="text-white text-4xl md:text-6xl font-display font-bold tracking-tight uppercase">
+          <h2 className="text-white text-4xl md:text-6xl font-display font-bold tracking-tight uppercase whitespace-nowrap text-center">
             {label}
           </h2>
         </div>

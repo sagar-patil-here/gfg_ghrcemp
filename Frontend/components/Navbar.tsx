@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTransition } from '../context/TransitionContext';
 
 interface NavbarProps {
   onNavigate?: (view: string) => void;
@@ -7,6 +8,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { triggerTransition } = useTransition();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,12 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (view: string) => {
+    triggerTransition(view, () => {
+      onNavigate?.(view);
+    });
+  };
 
   return (
     <nav 
@@ -27,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         <button 
-          onClick={() => onNavigate?.('home')}
+          onClick={() => handleNavClick('home')}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <div className="w-3 h-3 bg-[#00df9a] rounded-full animate-pulse"></div>
@@ -38,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
           {['Events', 'Contests', 'Workshops', 'Team'].map((item) => (
             <button 
               key={item}
-              onClick={() => onNavigate?.(item)}
+              onClick={() => handleNavClick(item)}
               className={`hover:text-[#00df9a] transition-colors duration-300 relative group ${
                 currentView === 'events' && item === 'Events' ? 'text-[#00df9a]' : ''
               }`}

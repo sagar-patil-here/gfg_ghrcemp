@@ -6,8 +6,10 @@ import NewsGrid from './components/NewsGrid';
 import EventsPage from './components/EventsPage';
 import { fetchCampusUpdates } from './services/geminiService';
 import { CampusUpdate } from './types';
+import { TransitionProvider } from './context/TransitionContext';
+import CustomCursor from './components/CustomCursor';
 
-const App: React.FC = () => {
+const MainContent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [updates, setUpdates] = useState<CampusUpdate[]>([]);
@@ -41,7 +43,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#0f0f0f] min-h-screen text-white selection:bg-[#00df9a] selection:text-black">
+    <div className="bg-[#0f0f0f] min-h-screen text-white selection:bg-[#00df9a] selection:text-black cursor-none">
+      
+      <CustomCursor />
       
       {/* The Loader sits on top until it slides away */}
       {isLoading && <Loader onComplete={handleLoaderComplete} />}
@@ -52,7 +56,7 @@ const App: React.FC = () => {
         <main>
           {currentView === 'home' ? (
             <>
-              <Hero />
+              <Hero onNavigate={handleNavigation} />
               <NewsGrid updates={updates} />
             </>
           ) : (
@@ -69,5 +73,11 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const App: React.FC = () => (
+  <TransitionProvider>
+    <MainContent />
+  </TransitionProvider>
+);
 
 export default App;

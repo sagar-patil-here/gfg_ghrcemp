@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  overflow: auto; /* Restore scrolling */
+  margin: 0;
+  padding: 0;
+  cursor: none; /* Keep custom cursor */
+}
+
+/* Ensure cursor is hidden on all clickable elements too */
+a, button, [role="button"] {
+  cursor: none !important;
+}
+
+[data-scroll-container] {
+  min-height: 100vh;
+  perspective: 1px;
+}
+
+.is-revealed {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Page Transition Overlay */
+.overlay-transition {
+  will-change: transform, width, height, top, left, opacity;
+  background-color: #f3f3f3; /* Light gray/white from theme */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay-transition {
+    transition: none !important;
+    animation: none !important;
+    display: none !important;
+  }
+}

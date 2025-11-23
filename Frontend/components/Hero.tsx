@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useTransition } from '../context/TransitionContext';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  onNavigate?: (view: string) => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [offset, setOffset] = useState(0);
+  const { triggerTransition } = useTransition();
 
   useEffect(() => {
     const handleScroll = () => setOffset(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (view: string) => {
+    triggerTransition(view, () => {
+      onNavigate?.(view);
+    });
+  };
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0f0f0f]">
@@ -40,7 +52,7 @@ const Hero: React.FC = () => {
         </h2>
 
         <div className="flex justify-center gap-4 animate-[fadeIn_1s_ease-out_1.2s_both]">
-          <button className="px-8 py-4 bg-white text-black font-bold font-display text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300">
+          <button className="px-8 py-4 bg-white text-black font-bold font-display text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300" onClick={() => handleNavClick('Events')}>
             Upcoming Events
           </button>
           <button className="px-8 py-4 border border-white text-white font-bold font-display text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300">

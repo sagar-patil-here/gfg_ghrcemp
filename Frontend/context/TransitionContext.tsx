@@ -131,7 +131,7 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         {/* Transition Label - Absolute Center */}
         <div 
           ref={textRef}
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-full flex justify-center items-center"
         >
           <h2 className="text-white text-4xl md:text-6xl font-display font-bold tracking-tight uppercase whitespace-nowrap text-center">
             {label}

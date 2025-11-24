@@ -70,44 +70,51 @@ const AboutPage: React.FC = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {/* Photos - Varied sizes to fill gaps */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[200px]">
           {photos.map((photo, index) => {
-            // Create varied layout: mix of landscape (span 2 cols) and portrait (span 2 rows) to fill gaps
-            const getPhotoLayout = (idx: number) => {
-              if (idx === 0) return { cols: 'md:col-span-2', rows: '', aspect: '16/10' }; // Wide landscape
-              if (idx === 1) return { cols: '', rows: 'md:row-span-2', aspect: '2/3' }; // Tall portrait
-              if (idx === 2) return { cols: '', rows: 'md:row-span-2', aspect: '2/3' }; // Tall portrait
-              if (idx === 3) return { cols: 'md:col-span-2', rows: '', aspect: '16/10' }; // Wide landscape
-              if (idx === 4) return { cols: '', rows: 'md:row-span-2', aspect: '2/3' }; // Tall portrait
-              if (idx === 5) return { cols: 'md:col-span-2', rows: '', aspect: '16/10' }; // Wide landscape
-              return { cols: '', rows: 'md:row-span-2', aspect: '2/3' }; // Default tall portrait
+            // Modern Bento Grid Layout
+            const getLayoutClasses = (idx: number) => {
+              switch (idx) {
+                case 0: return 'md:col-span-2 md:row-span-2'; // Large Feature (Top Left)
+                case 1: return 'md:col-span-1 md:row-span-2'; // Tall Portrait (Middle)
+                case 2: return 'md:col-span-1 md:row-span-1'; // Small Square (Top Right)
+                case 3: return 'md:col-span-1 md:row-span-1'; // Small Square (Bottom Right)
+                case 4: return 'md:col-span-2 md:row-span-1'; // Wide Landscape (Middle Left)
+                case 5: return 'md:col-span-2 md:row-span-1'; // Wide Landscape (Middle Right)
+                case 6: return 'md:col-span-4 md:row-span-2'; // Massive Feature (Bottom - Team)
+                default: return 'md:col-span-1 md:row-span-1';
+              }
             };
-
-            const layout = getPhotoLayout(index);
 
             return (
               <div
                 key={photo}
-                className={`group relative cursor-pointer overflow-hidden rounded-xl bg-[#111111] border border-gray-800 hover:border-[#00df9a] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,223,154,0.2)] ${layout.cols} ${layout.rows}`}
-                style={{ aspectRatio: layout.aspect }}
+                className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-[#111111] border border-white/5 hover:border-[#00df9a]/50 transition-all duration-500 ${getLayoutClasses(index)}`}
                 onClick={() => handlePhotoClick(photo)}
               >
+                {/* Image */}
                 <img
                   src={photo}
                   alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                  className="w-full h-full object-cover opacity-80 grayscale-[0.3] group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 group-hover:bg-white/20 group-hover:scale-110 transition-all duration-300">
+                
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+                
+                {/* Hover Interaction */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                     </svg>
                   </div>
                 </div>
+
+                {/* Corner Accent */}
+                <div className="absolute top-4 right-4 w-2 h-2 bg-[#00df9a] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 shadow-[0_0_10px_#00df9a]" />
               </div>
             );
           })}

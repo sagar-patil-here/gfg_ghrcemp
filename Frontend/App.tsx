@@ -8,7 +8,7 @@ import TeamPage from './components/TeamPage';
 import AboutPage from './components/AboutPage';
 import { fetchCampusUpdates } from './services/geminiService';
 import { CampusUpdate } from './types';
-import { TransitionProvider } from './context/TransitionContext';
+import { TransitionProvider } from './context/TransitionContext.tsx';
 import CustomCursor from './components/CustomCursor';
 
 const MainContent: React.FC = () => {
@@ -16,6 +16,7 @@ const MainContent: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
   const [updates, setUpdates] = useState<CampusUpdate[]>([]);
   const [currentView, setCurrentView] = useState<'home' | 'events' | 'team' | 'about'>('home');
+  const [eventsFilter, setEventsFilter] = useState<'Upcoming' | 'Past'>('Past');
 
   useEffect(() => {
     // Start fetching data immediately while loader plays
@@ -36,10 +37,13 @@ const MainContent: React.FC = () => {
     setTimeout(() => setShowContent(true), 100);
   };
 
-  const handleNavigation = (view: string) => {
+  const handleNavigation = (view: string, filter?: 'Upcoming' | 'Past') => {
     switch (view.toLowerCase()) {
       case 'events':
         setCurrentView('events');
+        if (filter) {
+          setEventsFilter(filter);
+        }
         break;
       case 'team':
         setCurrentView('team');
@@ -71,7 +75,7 @@ const MainContent: React.FC = () => {
             </>
           )}
 
-          {currentView === 'events' && <EventsPage />}
+          {currentView === 'events' && <EventsPage initialFilter={eventsFilter} />}
           {currentView === 'team' && <TeamPage />}
           {currentView === 'about' && <AboutPage />}
           

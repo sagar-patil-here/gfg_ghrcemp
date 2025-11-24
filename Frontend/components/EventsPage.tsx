@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EventDetails } from '../types';
 
 const MOCK_EVENTS: EventDetails[] = [
@@ -34,9 +34,18 @@ const MOCK_EVENTS: EventDetails[] = [
   }
 ];
 
-const EventsPage: React.FC = () => {
-  const [filter, setFilter] = useState<'Upcoming' | 'Past'>('Past');
+interface EventsPageProps {
+  initialFilter?: 'Upcoming' | 'Past';
+}
+
+const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
+  const [filter, setFilter] = useState<'Upcoming' | 'Past'>(initialFilter);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  // Update filter when initialFilter prop changes
+  useEffect(() => {
+    setFilter(initialFilter);
+  }, [initialFilter]);
 
   const filteredEvents = MOCK_EVENTS.filter(e => e.status === filter);
 

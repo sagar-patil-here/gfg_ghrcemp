@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTransition } from '../context/TransitionContext.tsx';
 
 interface NavbarProps {
-  onNavigate?: (view: string) => void;
+  onNavigate?: (view: string, filter?: 'Upcoming' | 'Past') => void;
   currentView?: 'home' | 'events' | 'team' | 'about';
 }
 
@@ -31,10 +31,10 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleNavClick = (view: string) => {
+  const handleNavClick = (view: string, filter?: 'Upcoming' | 'Past') => {
     setIsMobileMenuOpen(false);
     triggerTransition(view, () => {
-      onNavigate?.(view);
+      onNavigate?.(view, filter);
     });
   };
 
@@ -77,7 +77,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
           {['Events', 'Team', 'About'].map((item) => (
             <button 
               key={item}
-              onClick={() => handleNavClick(item)}
+              onClick={() => handleNavClick(item, item === 'Events' ? 'Past' : undefined)}
               className={`hover:text-[#00df9a] transition-colors duration-300 relative group ${
                 isActive(item) ? 'text-[#00df9a]' : ''
               }`}
@@ -149,7 +149,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
               {['Home', 'Events', 'Team', 'About'].map((item) => (
                 <button 
                   key={item}
-                  onClick={() => handleNavClick(item)}
+                  onClick={() => handleNavClick(item, item === 'Events' ? 'Past' : undefined)}
                   className={`text-left text-lg font-medium uppercase tracking-wider transition-colors duration-300 ${
                     isActive(item) 
                       ? 'text-black font-bold' 

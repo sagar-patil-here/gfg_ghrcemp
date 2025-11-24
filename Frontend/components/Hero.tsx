@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTransition } from '../context/TransitionContext.tsx';
 
 interface HeroProps {
-  onNavigate?: (view: string) => void;
+  onNavigate?: (view: string, filter?: 'Upcoming' | 'Past') => void;
 }
 
 const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
@@ -59,7 +59,11 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </h2>
 
         <div className="flex justify-center gap-4 animate-[fadeIn_1s_ease-out_1.2s_both]">
-          <button className="px-8 py-4 bg-white text-black font-bold font-display text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300" onClick={() => handleNavClick('Events')}>
+          <button className="px-8 py-4 bg-white text-black font-bold font-display text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300" onClick={() => {
+            triggerTransition('Events', () => {
+              onNavigate?.('Events', 'Upcoming');
+            });
+          }}>
             Upcoming Events
           </button>
           <button 

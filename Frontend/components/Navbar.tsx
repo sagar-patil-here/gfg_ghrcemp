@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useTransition } from '../context/TransitionContext';
+import { useTransition } from '../context/TransitionContext.tsx';
 
 interface NavbarProps {
   onNavigate?: (view: string) => void;
-  currentView?: 'home' | 'events';
+  currentView?: 'home' | 'events' | 'team' | 'about';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
@@ -25,6 +25,17 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
     });
   };
 
+  const isActive = (item: string) => {
+    const key = item.toLowerCase(); // events, team, about
+    return currentView === key;
+  };
+
+  const handleJoinClick = () => {
+    triggerTransition('Join', () => {
+      window.open('mailto:gfg.ghrcemp@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
+    });
+  };
+
   return (
     <nav 
       className={`fixed top-0 left-0 w-full z-40 px-6 transition-all duration-300 ${
@@ -43,20 +54,27 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
         </button>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-wider">
-          {['Events', 'Contests', 'Workshops', 'Team'].map((item) => (
+          {['Events', 'Team', 'About'].map((item) => (
             <button 
               key={item}
               onClick={() => handleNavClick(item)}
               className={`hover:text-[#00df9a] transition-colors duration-300 relative group ${
-                currentView === 'events' && item === 'Events' ? 'text-[#00df9a]' : ''
+                isActive(item) ? 'text-[#00df9a]' : ''
               }`}
             >
               {item}
               <span className={`absolute -bottom-1 left-0 h-[1px] bg-[#00df9a] transition-all duration-300 group-hover:w-full ${
-                currentView === 'events' && item === 'Events' ? 'w-full' : 'w-0'
+                isActive(item) ? 'w-full' : 'w-0'
               }`}></span>
             </button>
           ))}
+          <button
+            onClick={handleJoinClick}
+            className="text-sm font-medium tracking-wider hover:text-[#00df9a] transition-colors duration-300 relative group"
+          >
+            Join
+            <span className="absolute -bottom-1 left-0 h-[1px] bg-[#00df9a] transition-all duration-300 group-hover:w-full w-0"></span>
+          </button>
         </div>
 
         <button className="md:hidden text-white">

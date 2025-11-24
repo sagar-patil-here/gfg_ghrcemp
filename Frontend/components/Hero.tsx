@@ -38,6 +38,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+
         <div className="overflow-hidden mb-4">
           <p className="text-[#00df9a] font-mono text-sm tracking-[0.3em] uppercase animate-[slideUp_0.8s_ease-out_0.5s_both]">
             GeeksforGeeks Campus Body

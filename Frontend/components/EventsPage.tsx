@@ -4,48 +4,38 @@ import { EventDetails } from '../types';
 const MOCK_EVENTS: EventDetails[] = [
   {
     id: 'e1',
-    title: 'GFG Student Chapter Orientation',
-    summary: 'Kickstart your journey with us! Meet the team, learn about upcoming events, and grab some cool swag.',
-    date: 'Aug 15, 2025',
+    title: 'Dive into DSA',
+    summary: 'An intensive workshop focused on Data Structures and Algorithms. Master the fundamentals and advanced concepts with hands-on practice.',
+    date: 'Jan 15, 2025',
     time: '10:00 AM',
-    location: 'Main Auditorium',
-    category: 'Event',
-    status: 'Past',
-  },
-  {
-    id: 'e2',
-    title: 'DSA Bootcamp: Array & Strings',
-    summary: 'Deep dive into Data Structures. Master arrays and strings with our expert mentors.',
-    date: 'Sep 05, 2025',
-    time: '02:00 PM',
-    location: 'Lab 304',
+    location: 'E-312',
     category: 'Workshop',
     status: 'Past',
   },
   {
-    id: 'e3',
-    title: 'Mega Hackathon 2025',
-    summary: '48 hours of non-stop coding. Build solutions for real-world problems. Prizes worth $5k!',
-    date: 'Oct 20, 2025',
+    id: 'e2',
+    title: 'Ideathon 2k25',
+    summary: 'A 24-hour innovation challenge where participants brainstorm and pitch creative solutions to real-world problems. Showcase your ideas and win exciting prizes!',
+    date: 'Feb 20, 2025',
     time: '09:00 AM',
-    location: 'Innovation Hub',
+    location: 'E-312',
     category: 'Contest',
-    status: 'Upcoming',
+    status: 'Past',
   },
   {
-    id: 'e4',
-    title: 'Tech Talk: Future of AI',
-    summary: 'An interactive session with industry leaders on the evolving landscape of Artificial Intelligence.',
-    date: 'Nov 10, 2025',
-    time: '11:00 AM',
-    location: 'Virtual (Zoom)',
+    id: 'e3',
+    title: 'GFG Gaming Event',
+    summary: 'An exciting gaming competition featuring multiple tournaments. Compete with fellow students in various games and showcase your gaming skills.',
+    date: 'Mar 10, 2025',
+    time: '02:00 PM',
+    location: 'E-312',
     category: 'Event',
-    status: 'Upcoming',
+    status: 'Past',
   }
 ];
 
 const EventsPage: React.FC = () => {
-  const [filter, setFilter] = useState<'Upcoming' | 'Past'>('Upcoming');
+  const [filter, setFilter] = useState<'Upcoming' | 'Past'>('Past');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const filteredEvents = MOCK_EVENTS.filter(e => e.status === filter);
@@ -67,7 +57,7 @@ const EventsPage: React.FC = () => {
 
           {/* Floating Filter Tabs */}
           <div className="flex gap-6 mt-8">
-            {['Upcoming', 'Past'].map((tab) => (
+            {['Past', 'Upcoming'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab as 'Upcoming' | 'Past')}
@@ -144,7 +134,9 @@ const EventsPage: React.FC = () => {
 
         {filteredEvents.length === 0 && (
           <div className="text-center py-24 text-gray-500 font-mono">
-            No events found in this category.
+            {filter === 'Upcoming' 
+              ? 'Currently no upcoming event scheduled.' 
+              : 'No events found in this category.'}
           </div>
         )}
       </div>

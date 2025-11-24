@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import NewsGrid from './components/NewsGrid';
 import EventsPage from './components/EventsPage';
+import TeamPage from './components/TeamPage';
+import AboutPage from './components/AboutPage';
 import { fetchCampusUpdates } from './services/geminiService';
 import { CampusUpdate } from './types';
 import { TransitionProvider } from './context/TransitionContext';
@@ -13,7 +15,7 @@ const MainContent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [updates, setUpdates] = useState<CampusUpdate[]>([]);
-  const [currentView, setCurrentView] = useState<'home' | 'events'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'events' | 'team' | 'about'>('home');
 
   useEffect(() => {
     // Start fetching data immediately while loader plays
@@ -35,10 +37,18 @@ const MainContent: React.FC = () => {
   };
 
   const handleNavigation = (view: string) => {
-    if (view === 'Events') {
-      setCurrentView('events');
-    } else {
-      setCurrentView('home');
+    switch (view.toLowerCase()) {
+      case 'events':
+        setCurrentView('events');
+        break;
+      case 'team':
+        setCurrentView('team');
+        break;
+      case 'about':
+        setCurrentView('about');
+        break;
+      default:
+        setCurrentView('home');
     }
   };
 
@@ -54,19 +64,26 @@ const MainContent: React.FC = () => {
       <div className={`transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
         <Navbar onNavigate={handleNavigation} currentView={currentView} />
         <main>
-          {currentView === 'home' ? (
+          {currentView === 'home' && (
             <>
               <Hero onNavigate={handleNavigation} />
               <NewsGrid updates={updates} />
             </>
-          ) : (
-            <EventsPage />
           )}
+
+          {currentView === 'events' && <EventsPage />}
+          {currentView === 'team' && <TeamPage />}
+          {currentView === 'about' && <AboutPage />}
           
           {/* Simple Footer */}
           <footer className="py-12 text-center text-gray-600 text-sm font-mono border-t border-gray-900">
             <p>GFG GHRCEMP © {new Date().getFullYear()}</p>
-            <p className="mt-2 text-xs">🦋 Proudly made by the Technical Team GFG GHRCEMP 🦋</p>
+            <button
+              onClick={() => window.open('https://github.com/sagar-patil-here', '_blank', 'noopener,noreferrer')}
+              className="mt-2 text-xs text-gray-500 hover:text-white transition-colors"
+            >
+              🦋 Proudly made by the Technical Team GFG GHRCEMP 🦋
+            </button>
           </footer>
         </main>
       </div>

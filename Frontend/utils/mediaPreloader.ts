@@ -16,7 +16,6 @@ const criticalAssets: PreloadItem[] = [
   // First few gallery items (above the fold)
   { src: '/content/IMG_0527.JPG', type: 'image', priority: 'high' },
   { src: '/content/IMG_0528.JPG', type: 'image', priority: 'high' },
-  { src: '/content/IMG_0408.MOV', type: 'video', priority: 'low' }, // First video
 ];
 
 const lowPriorityAssets: PreloadItem[] = [
@@ -25,8 +24,6 @@ const lowPriorityAssets: PreloadItem[] = [
   { src: '/content/IMG_0535.JPG', type: 'image', priority: 'low' },
   { src: '/content/IMG_0536.JPG', type: 'image', priority: 'low' },
   { src: '/content/winner.JPG', type: 'image', priority: 'low' },
-  { src: '/content/winner.MOV', type: 'video', priority: 'low' },
-  { src: '/content/winner1.MOV', type: 'video', priority: 'low' },
 ];
 
 export const preloadMedia = (onProgress?: (loaded: number, total: number) => void): Promise<void> => {

@@ -1,139 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-
-
-// Video Modal Component with Loading State
-const VideoModal: React.FC<{ videoSrc: string; onClose: () => void }> = ({ videoSrc, onClose }) => {
-  const [isReady, setIsReady] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleCanPlayThrough = () => {
-      setIsReady(true);
-    };
-
-    video.addEventListener('canplaythrough', handleCanPlayThrough);
-    
-    // Fallback: if video takes too long, show it anyway
-    const timeout = setTimeout(() => {
-      setIsReady(true);
-    }, 10000); // 10 second timeout
-
-    return () => {
-      video.removeEventListener('canplaythrough', handleCanPlayThrough);
-      clearTimeout(timeout);
-    };
-  }, [videoSrc]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[10000] bg-black/95 flex items-center justify-center p-4 cursor-pointer"
-      onClick={onClose}
-    >
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-white hover:text-[#00df9a] transition-colors z-10"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      
-      {/* Loading Placeholder */}
-      {!isReady && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 border-4 border-[#00df9a]/30 border-t-[#00df9a] rounded-full animate-spin"></div>
-            <p className="text-sm text-gray-400 font-mono uppercase tracking-wider">Loading Video...</p>
-          </div>
-        </div>
-      )}
-      
-      <video
-        ref={videoRef}
-        src={videoSrc}
-        className={`max-w-full max-h-[90vh] object-contain transition-opacity duration-300 ${
-          isReady ? 'opacity-100' : 'opacity-0'
-        }`}
-        controls
-        autoPlay
-        onClick={(e) => e.stopPropagation()}
-      />
-    </div>
-  );
-};
+import React, { useState } from 'react';
 
 const AboutPage: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-  const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set());
-  const [readyVideos, setReadyVideos] = useState<Set<string>>(new Set());
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
-  const loadedVideosRef = useRef<Set<string>>(new Set());
-
-  // Lazy load videos when they enter viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const video = entry.target as HTMLVideoElement;
-            const src = video.dataset.src;
-            if (src && !loadedVideosRef.current.has(src)) {
-              loadedVideosRef.current.add(src);
-              video.src = src;
-              video.load();
-              setLoadedVideos((prev) => new Set(prev).add(src));
-              
-              // Wait for video to be fully ready before showing
-              const handleCanPlayThrough = () => {
-                setReadyVideos((prev) => {
-                  const newSet = new Set(prev);
-                  if (!newSet.has(src)) {
-                    newSet.add(src);
-                  }
-                  return newSet;
-                });
-                video.removeEventListener('canplaythrough', handleCanPlayThrough);
-                video.removeEventListener('error', handleError);
-              };
-              
-              const handleError = () => {
-                setReadyVideos((prev) => {
-                  const newSet = new Set(prev);
-                  if (!newSet.has(src)) {
-                    newSet.add(src);
-                  }
-                  return newSet;
-                });
-                video.removeEventListener('canplaythrough', handleCanPlayThrough);
-                video.removeEventListener('error', handleError);
-              };
-              
-              video.addEventListener('canplaythrough', handleCanPlayThrough);
-              video.addEventListener('error', handleError);
-              
-              observer.unobserve(video);
-            }
-          }
-        });
-      },
-      { rootMargin: '100px' }
-    );
-
-    // Use setTimeout to ensure DOM is ready
-    const timeoutId = setTimeout(() => {
-      const videos = document.querySelectorAll('[data-video-lazy]');
-      videos.forEach((video) => observer.observe(video));
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
-    };
-  }, []); // Empty dependency array - only run once on mount
 
   const photos = [
     '/content/IMG_0527.JPG',
@@ -145,23 +13,12 @@ const AboutPage: React.FC = () => {
     '/content/The team.JPG',
   ];
 
-  const videos = [
-    '/content/IMG_0408.MOV',
-    '/content/winner.MOV',
-    '/content/winner1.MOV',
-  ];
-
   const handlePhotoClick = (photo: string) => {
     setSelectedPhoto(photo);
   };
 
-  const handleVideoClick = (video: string) => {
-    setSelectedVideo(video);
-  };
-
   const closeModal = () => {
     setSelectedPhoto(null);
-    setSelectedVideo(null);
   };
 
   return (
@@ -214,91 +71,6 @@ const AboutPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {/* Videos - Larger */}
-          {videos.map((video, index) => (
-            <div
-              key={video}
-              className={`group relative cursor-pointer overflow-hidden rounded-xl bg-[#111111] border border-gray-800 hover:border-[#00df9a] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,223,154,0.2)] ${
-                index === 0 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-2'
-              }`}
-              style={{ aspectRatio: index === 0 ? '3/4' : '16/9' }}
-              onClick={() => handleVideoClick(video)}
-            >
-              {/* Loading Placeholder */}
-              {!readyVideos.has(video) && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a]">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-12 h-12 border-2 border-[#00df9a]/30 border-t-[#00df9a] rounded-full animate-spin"></div>
-                    <p className="text-xs text-gray-500 font-mono uppercase tracking-wider">Loading...</p>
-                  </div>
-                </div>
-              )}
-              
-              {/* Video Element */}
-              {loadedVideos.has(video) ? (
-                <video
-                  ref={(el) => {
-                    if (el) videoRefs.current[video] = el;
-                  }}
-                  src={video}
-                  className={`w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 ${
-                    readyVideos.has(video) ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  onCanPlayThrough={() => {
-                    if (!readyVideos.has(video)) {
-                      setReadyVideos((prev) => {
-                        const newSet = new Set(prev);
-                        newSet.add(video);
-                        return newSet;
-                      });
-                    }
-                  }}
-                  onError={() => {
-                    // Show video even on error
-                    if (!readyVideos.has(video)) {
-                      setReadyVideos((prev) => {
-                        const newSet = new Set(prev);
-                        newSet.add(video);
-                        return newSet;
-                      });
-                    }
-                  }}
-                  onMouseEnter={(e) => {
-                    const vid = e.currentTarget;
-                    if (vid.paused && readyVideos.has(video)) vid.play().catch(() => {});
-                  }}
-                  onMouseLeave={(e) => {
-                    const vid = e.currentTarget;
-                    vid.pause();
-                    vid.currentTime = 0;
-                  }}
-                />
-              ) : (
-                <video
-                  data-video-lazy
-                  data-src={video}
-                  className="w-full h-full object-cover opacity-0"
-                  muted
-                  loop
-                  playsInline
-                  preload="none"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-                  <svg className="w-8 h-8 text-white ml-1 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          ))}
-
           {/* Photos - Varied sizes to fill gaps */}
           {photos.map((photo, index) => {
             // Create varied layout: mix of landscape (span 2 cols) and portrait (span 2 rows) to fill gaps
@@ -363,14 +135,6 @@ const AboutPage: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           />
         </div>
-      )}
-
-      {/* Video Modal */}
-      {selectedVideo && (
-        <VideoModal 
-          videoSrc={selectedVideo} 
-          onClose={closeModal}
-        />
       )}
     </section>
   );

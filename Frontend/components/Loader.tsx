@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { preloadMedia } from '../utils/mediaPreloader';
 
 interface LoaderProps {
   onComplete: () => void;
@@ -9,34 +10,70 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    // Simulate organic loading curve (fast start, slow end)
+    let animationFrameId: number;
     let currentProgress = 0;
-    const interval = setInterval(() => {
-      // Random increment based on current progress
-      const increment = currentProgress < 50 
-        ? Math.random() * 10 + 5 // Fast
-        : currentProgress < 80 
-          ? Math.random() * 5 + 2 // Medium
-          : Math.random() * 2 + 0.5; // Slow finish
-
-      currentProgress += increment;
+    let targetProgress = 0;
+    let mediaProgress = 0;
+    let isComplete = false;
+    let startTime = Date.now();
+    
+    // Smooth animation loop using requestAnimationFrame (60fps)
+    const animate = () => {
+      if (isComplete) return;
       
-      if (currentProgress >= 100) {
+      // Smooth progress animation independent of media loading
+      const elapsed = Date.now() - startTime;
+      const baseProgress = Math.min(elapsed / 2000 * 50, 50); // Base animation to 50% in 2s
+      
+      // Combine base animation with media progress
+      targetProgress = Math.min(baseProgress + mediaProgress * 0.5, 100);
+      
+      // Smooth interpolation towards target
+      currentProgress += (targetProgress - currentProgress) * 0.1;
+      
+      if (currentProgress >= 99.9) {
         currentProgress = 100;
-        clearInterval(interval);
+        isComplete = true;
+        setProgress(100);
         
-        // Brief pause at 100% before exit animation
         setTimeout(() => {
           setIsExiting(true);
-          // Wait for exit animation to finish before unmounting from DOM
+          setTimeout(onComplete, 1000);
+        }, 500);
+        return;
+      }
+      
+      setProgress(Math.round(currentProgress));
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    
+    // Start smooth animation loop
+    animationFrameId = requestAnimationFrame(animate);
+    
+    // Preload media in background (non-blocking)
+    preloadMedia((loaded, total) => {
+      // Update media progress (contributes up to 50% additional)
+      mediaProgress = Math.min((loaded / total) * 50, 50);
+    }).catch(() => {
+      // Ignore errors, continue anyway
+    });
+
+    // Fallback: ensure loader completes even if media fails
+    const timeout = setTimeout(() => {
+      if (!isComplete) {
+        isComplete = true;
+        setProgress(100);
+        setTimeout(() => {
+          setIsExiting(true);
           setTimeout(onComplete, 1000);
         }, 500);
       }
-      
-      setProgress(Math.min(Math.round(currentProgress), 100));
-    }, 100);
+    }, 4000); // Max 4 seconds
 
-    return () => clearInterval(interval);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearTimeout(timeout);
+    };
   }, [onComplete]);
 
   return (

@@ -1,8 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const AboutPage: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set());
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+
+  // Lazy load videos when they enter viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target as HTMLVideoElement;
+            const src = video.dataset.src;
+            if (src && !loadedVideos.has(src)) {
+              video.src = src;
+              video.load();
+              setLoadedVideos((prev) => new Set(prev).add(src));
+              observer.unobserve(video);
+            }
+          }
+        });
+      },
+      { rootMargin: '100px' }
+    );
+
+    const videos = document.querySelectorAll('[data-video-lazy]');
+    videos.forEach((video) => observer.observe(video));
+
+    return () => {
+      videos.forEach((video) => observer.unobserve(video));
+    };
+  }, [loadedVideos]);
 
   const photos = [
     '/content/IMG_0527.JPG',
@@ -45,11 +75,11 @@ const AboutPage: React.FC = () => {
           </h1>
           <div className="mt-6 flex items-center gap-6">
             <div className="w-24 h-24 rounded-full bg-white border border-white/50 overflow-hidden flex items-center justify-center p-2">
-              <img src="/gfg_logo.jpeg" alt="GFG logo" className="w-full h-full object-contain" />
+              <img src="/gfg_logo.jpeg" alt="GFG logo" className="w-full h-full object-contain" loading="eager" />
             </div>
             <span className="text-sm font-mono tracking-[0.3em] text-gray-500">x</span>
             <div className="w-24 h-24 rounded-full bg-white border border-white/50 overflow-hidden flex items-center justify-center p-2">
-              <img src="/raisoni_logo.png" alt="Raisoni logo" className="w-full h-full object-contain" />
+              <img src="/raisoni_logo.png" alt="Raisoni logo" className="w-full h-full object-contain" loading="eager" />
             </div>
           </div>
         </header>
@@ -93,13 +123,38 @@ const AboutPage: React.FC = () => {
               style={{ aspectRatio: index === 0 ? '3/4' : '16/9' }}
               onClick={() => handleVideoClick(video)}
             >
-              <video
-                src={video}
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
-                muted
-                loop
-                playsInline
-              />
+              {loadedVideos.has(video) ? (
+                <video
+                  ref={(el) => {
+                    if (el) videoRefs.current[video] = el;
+                  }}
+                  src={video}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  onMouseEnter={(e) => {
+                    const vid = e.currentTarget;
+                    if (vid.paused) vid.play().catch(() => {});
+                  }}
+                  onMouseLeave={(e) => {
+                    const vid = e.currentTarget;
+                    vid.pause();
+                    vid.currentTime = 0;
+                  }}
+                />
+              ) : (
+                <video
+                  data-video-lazy
+                  data-src={video}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
                 <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
@@ -137,6 +192,8 @@ const AboutPage: React.FC = () => {
                   src={photo}
                   alt={`Gallery ${index + 1}`}
                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">

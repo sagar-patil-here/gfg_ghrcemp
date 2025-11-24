@@ -35,6 +35,8 @@ const TeamPage: React.FC = () => {
             src="/content/The team.JPG"
             alt="Team 2k25"
             className="w-full h-auto rounded-xl"
+            loading="lazy"
+            decoding="async"
           />
           {/* Simple Heading Overlay */}
           <div className="absolute bottom-3 left-4 md:bottom-4 md:left-6 bg-black/60 backdrop-blur-sm px-3 py-2 rounded-lg">

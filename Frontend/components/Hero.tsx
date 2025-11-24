@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useTransition } from '../context/TransitionContext';
+import { useTransition } from '../context/TransitionContext.tsx';
 
 interface HeroProps {
   onNavigate?: (view: string) => void;
@@ -21,8 +21,14 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     });
   };
 
-  return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0f0f0f]">
+      const handleJoinClick = () => {
+        triggerTransition('Join', () => {
+          window.open('mailto:ghecemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
+        });
+      };
+
+      return (
+        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0f0f0f]">
       
       {/* Parallax Background Typography */}
       <div 
@@ -56,7 +62,10 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           <button className="px-8 py-4 bg-white text-black font-bold font-display text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300" onClick={() => handleNavClick('Events')}>
             Upcoming Events
           </button>
-          <button className="px-8 py-4 border border-white text-white font-bold font-display text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300">
+          <button 
+            className="px-8 py-4 border border-white text-white font-bold font-display text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
+            onClick={handleJoinClick}
+          >
             Join Chapter
           </button>
         </div>

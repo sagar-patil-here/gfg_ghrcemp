@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
 
   const handleJoinClick = () => {
     triggerTransition('Join', () => {
-      window.open('mailto:gfg.ghrcemp@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
+      window.open('mailto:ghecemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
     });
   };
 

@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
   const handleJoinClick = () => {
     setIsMobileMenuOpen(false);
     triggerTransition('Join', () => {
-      window.open('mailto:ghecemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
+      window.open('mailto:ghrcemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
     });
   };
 

@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const AboutPage: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Delay grid rendering slightly to allow page transition to complete smoothly
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const photos = [
     '/content/IMG_0527.JPG',
@@ -61,16 +70,17 @@ const AboutPage: React.FC = () => {
         </div>
 
         {/* Gallery Section */}
-        <div className="mb-8">
-          <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">
-            Media
-          </p>
-          <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-white">
-            Our Event Winners
-          </h2>
-        </div>
+        <div className={`transition-opacity duration-1000 ease-out ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="mb-8">
+            <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">
+              Media
+            </p>
+            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-white">
+              Our Event Winners
+            </h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[200px]">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[200px]">
           {photos.map((photo, index) => {
             // Modern Bento Grid Layout
             const getLayoutClasses = (idx: number) => {
@@ -118,6 +128,7 @@ const AboutPage: React.FC = () => {
               </div>
             );
           })}
+        </div>
         </div>
       </div>
 

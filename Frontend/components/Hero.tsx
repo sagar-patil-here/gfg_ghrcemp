@@ -23,7 +23,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
       const handleJoinClick = () => {
         triggerTransition('Join', () => {
-          window.open('mailto:ghecemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
+          window.open('mailto:ghrcemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
         });
       };
 

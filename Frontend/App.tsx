@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import NewsGrid from './components/NewsGrid';
+import ClubInfo from './components/ClubInfo';
 import EventsPage from './components/EventsPage';
 import TeamPage from './components/TeamPage';
 import AboutPage from './components/AboutPage';
@@ -71,7 +71,7 @@ const MainContent: React.FC = () => {
           {currentView === 'home' && (
             <>
               <Hero onNavigate={handleNavigation} />
-              <NewsGrid updates={updates} />
+              <ClubInfo />
             </>
           )}
 

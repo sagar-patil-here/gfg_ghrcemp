@@ -4,6 +4,8 @@ import { motion, useSpring, useMotionValue } from 'framer-motion';
 const CustomCursor: React.FC = () => {
   const [isHovering, setIsHovering] = useState(false);
   
+  const [isVisible, setIsVisible] = useState(false);
+  
   // Initialize off-screen to prevent flash
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -17,6 +19,7 @@ const CustomCursor: React.FC = () => {
     const updateMousePosition = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
+      setIsVisible(true);
 
       const target = e.target as HTMLElement;
       const clickable = target.closest('button') || 
@@ -25,14 +28,29 @@ const CustomCursor: React.FC = () => {
       setIsHovering(!!clickable);
     };
 
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    const handleMouseEnter = () => {
+      setIsVisible(true);
+    };
+
     window.addEventListener('mousemove', updateMousePosition, { passive: true });
-    return () => window.removeEventListener('mousemove', updateMousePosition);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseenter', handleMouseEnter);
+
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+    };
   }, [mouseX, mouseY]);
 
   return (
     <motion.div
       className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference flex items-center justify-center hidden md:flex will-change-transform"
-      style={{ x, y, translateX: '-50%', translateY: '-50%' }}
+      style={{ x, y, translateX: '-50%', translateY: '-50%', opacity: isVisible ? 1 : 0 }}
     >
       {/* This div is the actual cursor "body" and will handle the scaling and text centering */}
       {/* Reduced base size to 20px diameter */}

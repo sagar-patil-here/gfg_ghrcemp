@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <div className="w-3 h-3 bg-[#00df9a] rounded-full animate-pulse"></div>
-          <span className="font-display font-bold text-xl tracking-tighter">GFG GHRCEMP</span>
+          <span className="font-bold text-xl tracking-tighter">GFG GHRCEMP</span>
         </button>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-wider">

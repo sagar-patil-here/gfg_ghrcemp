@@ -183,7 +183,7 @@ const ClubInfo: React.FC = () => {
        <div className="mb-32">
           <div className="flex justify-between items-end mb-12">
              <h3 className="text-4xl md:text-5xl font-medium">Recent Highlights</h3>
-             <button className="text-sm uppercase tracking-wider border border-white/20 px-6 py-3 rounded-full hover:bg-white hover:text-black transition-colors">View Archive</button>
+             <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Curated moments</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">

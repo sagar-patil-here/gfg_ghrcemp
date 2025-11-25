@@ -35,7 +35,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none opacity-10 whitespace-nowrap select-none"
         style={{ transform: `translateY(${offset * 0.5}px)` }}
       >
-        <h1 className="text-[30vw] font-bold font-display text-white leading-none tracking-tighter relative">
+        <h1 className="text-[30vw] font-bold text-white leading-none tracking-tighter relative">
           GFG CB
           <span className="absolute -bottom-4 left-2 text-2xl md:text-4xl font-mono tracking-widest opacity-60">
             STUDENT CHAPTER &rarr; CAMPUS BODY
@@ -51,7 +51,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </p>
         </div>
         
-        <h2 className="text-5xl md:text-8xl font-display font-bold text-white mb-8 tracking-tight leading-tight">
+        <h2 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tight leading-tight">
           <span className="block animate-[slideUp_0.8s_ease-out_0.7s_both]">Code. Compete.</span>
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-600 animate-[slideUp_0.8s_ease-out_0.9s_both]">
             Conquer.
@@ -59,7 +59,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </h2>
 
         <div className="flex justify-center gap-4 animate-[fadeIn_1s_ease-out_1.2s_both]">
-          <button className="px-8 py-4 bg-white text-black font-bold font-display text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300" onClick={() => {
+          <button className="px-8 py-4 bg-white text-black font-bold text-sm uppercase tracking-wider hover:bg-[#00df9a] hover:text-black transition-colors duration-300" onClick={() => {
             triggerTransition('Events', () => {
               onNavigate?.('Events', 'Upcoming');
             });
@@ -67,7 +67,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             Upcoming Events
           </button>
           <button 
-            className="px-8 py-4 border border-white text-white font-bold font-display text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
+            className="px-8 py-4 border border-white text-white font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
             onClick={handleJoinClick}
           >
             Join Chapter

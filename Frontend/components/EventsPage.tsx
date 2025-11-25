@@ -55,7 +55,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
         
         {/* Header Section */}
         <div className="mb-12 border-b border-gray-800 pb-8 relative">
-          <h1 className="text-5xl md:text-7xl font-display font-bold mb-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4">
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-600">
               Events
             </span>
@@ -97,7 +97,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
 
               {/* Date Box */}
               <div className="flex-shrink-0 w-24 h-24 bg-[#0f0f0f] border border-gray-700 flex flex-col items-center justify-center group-hover:border-[#00df9a] transition-colors duration-300 z-10">
-                <span className="text-2xl font-display font-bold text-white">{event.date.split(' ')[1].replace(',', '')}</span>
+                <span className="text-2xl font-bold text-white">{event.date.split(' ')[1].replace(',', '')}</span>
                 <span className="text-xs font-mono uppercase text-gray-500">{event.date.split(' ')[0]}</span>
               </div>
 
@@ -113,7 +113,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
                     {event.category} • {event.time}
                   </span>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-2 group-hover:translate-x-2 transition-transform duration-300">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:translate-x-2 transition-transform duration-300">
                   {event.title}
                 </h3>
                 <p className="text-gray-400 text-sm max-w-xl">{event.summary}</p>
@@ -127,14 +127,12 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
               </div>
 
               {/* Action Button */}
-              <div className="flex-shrink-0 z-10 mt-4 md:mt-0">
-                <button className="px-6 py-3 bg-white text-black font-bold font-display text-xs uppercase tracking-wider hover:bg-[#00df9a] transition-colors duration-300 w-full md:w-auto">
-                  {event.status === 'Upcoming' ? 'Register Now' : 'View Details'}
-                </button>
+              <div className="flex-shrink-0 z-10 mt-4 md:mt-0 text-xs uppercase tracking-[0.3em] text-gray-500">
+                {event.status === 'Upcoming' ? 'Registration opens soon' : 'Archive ready'}
               </div>
 
               {/* Decorative ID */}
-              <div className="absolute top-4 right-4 text-[100px] font-display font-bold text-white opacity-[0.02] pointer-events-none select-none group-hover:opacity-[0.05] transition-opacity duration-500">
+              <div className="absolute top-4 right-4 text-[100px] font-bold text-white opacity-[0.02] pointer-events-none select-none group-hover:opacity-[0.05] transition-opacity duration-500">
                 {event.id}
               </div>
             </div>

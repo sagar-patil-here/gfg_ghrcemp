@@ -20,7 +20,7 @@ const TeamPage: React.FC = () => {
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">
             Core Team
           </p>
-          <h1 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             GFG GHRCEMP Team
           </h1>
           <p className="mt-4 text-sm md:text-base text-gray-400 max-w-2xl">
@@ -43,7 +43,7 @@ const TeamPage: React.FC = () => {
             <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-white mb-1">
               Team
             </p>
-            <h2 className="text-base md:text-lg font-display font-bold tracking-tight text-white">
+            <h2 className="text-base md:text-lg font-bold tracking-tight text-white">
               Team 2k25
             </h2>
           </div>
@@ -69,7 +69,7 @@ const TeamPage: React.FC = () => {
                       href={m.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-lg md:text-xl font-display font-bold text-white group-hover:text-[#00df9a] transition-colors duration-300 hover:underline flex items-center gap-2"
+                      className="text-lg md:text-xl font-bold text-white group-hover:text-[#00df9a] transition-colors duration-300 hover:underline flex items-center gap-2"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {m.name}
@@ -78,7 +78,7 @@ const TeamPage: React.FC = () => {
                       </svg>
                     </a>
                   ) : (
-                    <span className="text-lg md:text-xl font-display font-bold text-white group-hover:text-[#00df9a] transition-colors duration-300">
+                    <span className="text-lg md:text-xl font-bold text-white group-hover:text-[#00df9a] transition-colors duration-300">
                       {m.name}
                     </span>
                   )}

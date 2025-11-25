@@ -37,7 +37,7 @@ const AboutPage: React.FC = () => {
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">
             About
           </p>
-          <h1 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             GFG Campus Body
           </h1>
           <div className="mt-6 flex items-center gap-6">
@@ -75,7 +75,7 @@ const AboutPage: React.FC = () => {
             <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">
               Media
             </p>
-            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-white">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
               Our Event Winners
             </h2>
           </div>

@@ -84,7 +84,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
     >
       {/* Background Typography Decoration - Fixed */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center opacity-5">
-        <h1 className="text-[20vw] font-bold font-display leading-none tracking-tighter">
+        <h1 className="text-[20vw] font-bold leading-none tracking-tighter">
           GFG
         </h1>
       </div>
@@ -98,7 +98,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
 
         {/* Progress Number - Massive */}
         <div className="flex items-baseline overflow-hidden">
-          <span className="text-9xl md:text-[12rem] font-display font-bold leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">
+          <span className="text-9xl md:text-[12rem] font-bold leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">
             {progress}
           </span>
           <span className="text-4xl font-light text-gray-500 ml-2">%</span>

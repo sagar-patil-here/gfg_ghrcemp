@@ -133,7 +133,7 @@ export const TransitionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           ref={textRef}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-full flex justify-center items-center"
         >
-          <h2 className="text-white text-4xl md:text-6xl font-display font-bold tracking-tight uppercase whitespace-nowrap text-center">
+          <h2 className="text-white text-4xl md:text-6xl font-bold tracking-tight uppercase whitespace-nowrap text-center">
             {label}
           </h2>
         </div>

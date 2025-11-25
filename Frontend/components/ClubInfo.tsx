@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useTransition } from '../context/TransitionContext.tsx';
-import coordinatorPhoto from './Club-CO.png';
+import coordinatorPhoto from './club-CO.png';
 
 const stats = [
   { label: "Registered Students", current: 160, prev: 120, suffix: "+" },

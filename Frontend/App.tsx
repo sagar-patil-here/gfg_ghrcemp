@@ -40,7 +40,7 @@ const MainContent: React.FC = () => {
   const handleNavigation = (view: string, filter?: 'Upcoming' | 'Past') => {
     switch (view.toLowerCase()) {
       case 'events':
-        setCurrentView('events');
+      setCurrentView('events');
         if (filter) {
           setEventsFilter(filter);
         }
@@ -52,7 +52,7 @@ const MainContent: React.FC = () => {
         setCurrentView('about');
         break;
       default:
-        setCurrentView('home');
+      setCurrentView('home');
     }
   };
 

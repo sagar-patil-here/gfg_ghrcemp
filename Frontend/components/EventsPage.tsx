@@ -36,7 +36,7 @@ const MOCK_EVENTS: EventDetails[] = [
 
 interface EventsPageProps {
   initialFilter?: 'Upcoming' | 'Past';
-}
+  }
 
 const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
   const [filter, setFilter] = useState<'Upcoming' | 'Past'>(initialFilter);

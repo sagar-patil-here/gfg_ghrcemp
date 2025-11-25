@@ -27,8 +27,8 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         });
       };
 
-      return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0f0f0f]">
+  return (
+    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0f0f0f]">
       
       {/* Parallax Background Typography */}
       <div 

@@ -3,6 +3,7 @@ import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ClubInfo from './components/ClubInfo';
+import SocialHandles from './components/SocialHandles';
 import EventsPage from './components/EventsPage';
 import TeamPage from './components/TeamPage';
 import AboutPage from './components/AboutPage';
@@ -72,6 +73,7 @@ const MainContent: React.FC = () => {
             <>
               <Hero onNavigate={handleNavigation} />
               <ClubInfo />
+              <SocialHandles />
             </>
           )}
 

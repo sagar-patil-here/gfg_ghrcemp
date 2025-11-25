@@ -4,7 +4,7 @@ import { useTransition } from '../context/TransitionContext.tsx';
 import coordinatorPhoto from './club-CO.png';
 
 const stats = [
-  { label: "Registered Students", current: 160, prev: 120, suffix: "+" },
+  { label: "Registered Members", current: 160, prev: 120, suffix: "+" },
   { label: "Activities Conducted", current: 8, prev: 9, suffix: "" },
   { label: "Students Benefited", current: 2870, prev: 3794, suffix: "+" },
 ];

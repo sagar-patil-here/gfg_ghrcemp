@@ -69,7 +69,11 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <div className="w-3 h-3 bg-[#00df9a] rounded-full animate-pulse"></div>
+          <img 
+            src="/gfglogo.svg" 
+            alt="GFG Logo" 
+            className="w-6 h-6 md:w-7 md:h-7"
+          />
           <span className="font-bold text-xl tracking-tighter">GFG GHRCEMP</span>
         </button>
         

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const TeamPage: React.FC = () => {
   const members = [
@@ -15,6 +16,10 @@ const TeamPage: React.FC = () => {
 
   return (
     <section className="min-h-screen bg-[#0f0f0f] text-white pt-32 pb-20 px-6">
+      <Helmet>
+        <title>Team | GFG GHRCEMP Student Chapter</title>
+        <meta name="description" content="Meet the core team behind GFG GHRCEMP. A group of passionate students driving technical excellence on campus." />
+      </Helmet>
       <div className="max-w-5xl mx-auto">
         <header className="mb-12 border-b border-gray-800 pb-8">
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">

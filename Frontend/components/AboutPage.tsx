@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const AboutPage: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
@@ -32,6 +33,10 @@ const AboutPage: React.FC = () => {
 
   return (
     <section className="min-h-screen bg-[#0f0f0f] text-white pt-32 pb-20 px-6">
+      <Helmet>
+        <title>About | GFG GHRCEMP Student Chapter</title>
+        <meta name="description" content="Learn about GFG GHRCEMP, our mission, and our collaboration with GeeksforGeeks to foster a coding culture at Raisoni College." />
+      </Helmet>
       <div className="max-w-7xl mx-auto">
         <header className="mb-10 border-b border-gray-800 pb-8">
           <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#00df9a] mb-3">

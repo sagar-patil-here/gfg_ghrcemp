@@ -65,8 +65,12 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
       <div className={`flex justify-between items-center max-w-7xl mx-auto ${
         !isScrolled ? 'mix-blend-difference text-white' : 'text-white'
       }`}>
-        <button 
-          onClick={() => handleNavClick('home')}
+        <a 
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick('home');
+          }}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <img 
@@ -75,13 +79,17 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
             className="w-6 h-6 md:w-7 md:h-7"
           />
           <span className="font-bold text-xl tracking-tighter">GFG GHRCEMP</span>
-        </button>
+        </a>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-wider">
           {['Events', 'Team', 'About'].map((item) => (
-            <button 
+            <a 
               key={item}
-              onClick={() => handleNavClick(item, item === 'Events' ? 'Past' : undefined)}
+              href={`/${item.toLowerCase()}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick(item, item === 'Events' ? 'Past' : undefined);
+              }}
               className={`hover:text-[#00df9a] transition-colors duration-300 relative group ${
                 isActive(item) ? 'text-[#00df9a]' : ''
               }`}
@@ -90,7 +98,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
               <span className={`absolute -bottom-1 left-0 h-[1px] bg-[#00df9a] transition-all duration-300 group-hover:w-full ${
                 isActive(item) ? 'w-full' : 'w-0'
               }`}></span>
-            </button>
+            </a>
           ))}
           <button
             onClick={handleJoinClick}
@@ -151,9 +159,13 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
             {/* Navigation Links */}
             <div className="flex flex-col gap-6">
               {['Home', 'Events', 'Team', 'About'].map((item) => (
-                <button 
+                <a 
                   key={item}
-                  onClick={() => handleNavClick(item, item === 'Events' ? 'Past' : undefined)}
+                  href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(item, item === 'Events' ? 'Past' : undefined);
+                  }}
                   className={`text-left text-lg font-medium uppercase tracking-wider transition-colors duration-300 ${
                     isActive(item) 
                       ? 'text-black font-bold' 
@@ -161,7 +173,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                   }`}
                 >
                   {item}
-                </button>
+                </a>
               ))}
               
               <button

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { EventDetails } from '../types';
+import { Helmet } from 'react-helmet-async';
 
 const MOCK_EVENTS: EventDetails[] = [
   {
@@ -51,6 +52,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white pt-24 pb-12 px-6 animate-[fadeIn_0.5s_ease-out]">
+      <Helmet>
+        <title>Events | GFG GHRCEMP Student Chapter</title>
+        <meta name="description" content="Discover upcoming workshops, hackathons, and tech talks organized by GFG GHRCEMP. Enhance your coding skills." />
+      </Helmet>
       <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}

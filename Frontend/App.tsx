@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ClubInfo from './components/ClubInfo';
-import SocialHandles from './components/SocialHandles';
+import Home from './components/Home';
 import EventsPage from './components/EventsPage';
 import TeamPage from './components/TeamPage';
 import AboutPage from './components/AboutPage';
+import CustomCursor from './components/CustomCursor';
 import { fetchCampusUpdates } from './services/geminiService';
 import { CampusUpdate } from './types';
 import { TransitionProvider } from './context/TransitionContext.tsx';
-import CustomCursor from './components/CustomCursor';
 
 const MainContent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [updates, setUpdates] = useState<CampusUpdate[]>([]);
-  const [currentView, setCurrentView] = useState<'home' | 'events' | 'team' | 'about'>('home');
-  const [eventsFilter, setEventsFilter] = useState<'Upcoming' | 'Past'>('Past');
+  
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Start fetching data immediately while loader plays
@@ -30,7 +30,7 @@ const MainContent: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [currentView]);
+  }, [location.pathname]);
 
   const handleLoaderComplete = () => {
     setIsLoading(false);
@@ -39,22 +39,16 @@ const MainContent: React.FC = () => {
   };
 
   const handleNavigation = (view: string, filter?: 'Upcoming' | 'Past') => {
-    switch (view.toLowerCase()) {
-      case 'events':
-      setCurrentView('events');
-        if (filter) {
-          setEventsFilter(filter);
-        }
-        break;
-      case 'team':
-        setCurrentView('team');
-        break;
-      case 'about':
-        setCurrentView('about');
-        break;
-      default:
-      setCurrentView('home');
-    }
+    const path = view.toLowerCase() === 'home' ? '/' : `/${view.toLowerCase()}`;
+    // Pass filter in state if it exists
+    navigate(path, { state: { filter } });
+  };
+
+  // Determine current view for Navbar active state
+  const getCurrentView = () => {
+    const path = location.pathname;
+    if (path === '/') return 'home';
+    return path.substring(1) as 'events' | 'team' | 'about';
   };
 
   return (
@@ -67,19 +61,14 @@ const MainContent: React.FC = () => {
 
       {/* Main Application Content */}
       <div className={`transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-        <Navbar onNavigate={handleNavigation} currentView={currentView} />
+        <Navbar onNavigate={handleNavigation} currentView={getCurrentView()} />
         <main>
-          {currentView === 'home' && (
-            <>
-              <Hero onNavigate={handleNavigation} />
-              <ClubInfo />
-              <SocialHandles />
-            </>
-          )}
-
-          {currentView === 'events' && <EventsPage initialFilter={eventsFilter} />}
-          {currentView === 'team' && <TeamPage />}
-          {currentView === 'about' && <AboutPage />}
+          <Routes>
+            <Route path="/" element={<Home onNavigate={handleNavigation} />} />
+            <Route path="/events" element={<EventsPageWrapper />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
           
           {/* Simple Footer */}
           <footer className="py-12 text-center text-gray-600 text-sm font-mono border-t border-gray-900">
@@ -95,6 +84,13 @@ const MainContent: React.FC = () => {
       </div>
     </div>
   );
+};
+
+// Wrapper to handle location state for EventsPage
+const EventsPageWrapper = () => {
+  const location = useLocation();
+  const filter = location.state?.filter;
+  return <EventsPage initialFilter={filter} />;
 };
 
 const App: React.FC = () => (

@@ -1,0 +1,18 @@
+'Log files:
+/Users/sagarpatil/Work/Projects/gfg-campus-experience (1)/Frontend/npm-cache/_logs/2025-12-27T17_51_52_378Z-debug-0.log
+
+# npm resolution error report
+
+While resolving: gfg-campus-experience@0.0.0
+Found: react@19.2.3
+node_modules/react
+  react@"^19.2.0" from the root project
+
+Could not resolve dependency:
+peer react@"^16.6.0 || ^17.0.0 || ^18.0.0" from react-helmet-async@2.0.5
+node_modules/react-helmet-async
+  react-helmet-async@"*" from the root project
+
+Fix the upstream dependency conflict, or retry
+this command with --force or --legacy-peer-deps
+to accept an incorrect (and potentially broken) dependency resolution.

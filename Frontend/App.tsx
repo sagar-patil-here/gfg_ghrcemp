@@ -6,6 +6,7 @@ import Home from './components/Home';
 import EventsPage from './components/EventsPage';
 import TeamPage from './components/TeamPage';
 import AboutPage from './components/AboutPage';
+import GalleryPage from './components/GalleryPage';
 import CustomCursor from './components/CustomCursor';
 import { fetchCampusUpdates } from './services/geminiService';
 import { CampusUpdate } from './types';
@@ -48,7 +49,7 @@ const MainContent: React.FC = () => {
   const getCurrentView = () => {
     const path = location.pathname;
     if (path === '/') return 'home';
-    return path.substring(1) as 'events' | 'team' | 'about';
+    return path.substring(1) as 'events' | 'team' | 'gallery' | 'about';
   };
 
   return (
@@ -67,6 +68,7 @@ const MainContent: React.FC = () => {
             <Route path="/" element={<Home onNavigate={handleNavigation} />} />
             <Route path="/events" element={<EventsPageWrapper />} />
             <Route path="/team" element={<TeamPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
           

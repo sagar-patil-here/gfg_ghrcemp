@@ -3,7 +3,7 @@ import { useTransition } from '../context/TransitionContext.tsx';
 
 interface NavbarProps {
   onNavigate?: (view: string, filter?: 'Upcoming' | 'Past') => void;
-  currentView?: 'home' | 'events' | 'team' | 'about';
+  currentView?: 'home' | 'events' | 'team' | 'gallery' | 'about';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
@@ -39,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
   };
 
   const isActive = (item: string) => {
-    const key = item.toLowerCase(); // events, team, about
+    const key = item.toLowerCase(); // events, team, gallery, about
     return currentView === key;
   };
 
@@ -82,7 +82,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
         </a>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-wider">
-          {['Events', 'Team', 'About'].map((item) => (
+          {['Events', 'Team', 'Gallery', 'About'].map((item) => (
             <a 
               key={item}
               href={`/${item.toLowerCase()}`}
@@ -102,10 +102,9 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
           ))}
           <button
             onClick={handleJoinClick}
-            className="text-sm font-medium tracking-wider hover:text-[#00df9a] transition-colors duration-300 relative group"
+            className="px-6 py-2 rounded-full bg-[#00df9a] text-black font-medium tracking-wider hover:opacity-90 transition-opacity duration-300"
           >
             Join
-            <span className="absolute -bottom-1 left-0 h-[1px] bg-[#00df9a] transition-all duration-300 group-hover:w-full w-0"></span>
           </button>
         </div>
 
@@ -158,7 +157,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
           <div className="flex flex-col h-full pt-24 px-8">
             {/* Navigation Links */}
             <div className="flex flex-col gap-6">
-              {['Home', 'Events', 'Team', 'About'].map((item) => (
+              {['Home', 'Events', 'Team', 'Gallery', 'About'].map((item) => (
                 <a 
                   key={item}
                   href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}

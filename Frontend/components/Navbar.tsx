@@ -46,7 +46,14 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
   const handleJoinClick = () => {
     setIsMobileMenuOpen(false);
     triggerTransition('Join', () => {
-      window.open('mailto:ghrcemgfg@gmail.com?subject=Join%20GFG%20GHRCEMP', '_blank');
+      onNavigate?.('Join');
+      // If onNavigate doesn't handle routing (it might just set filter), we might need explicit navigation
+      // But looking at App.tsx handleNavigation:
+      // const handleNavigation = (view: string, filter?: 'Upcoming' | 'Past') => {
+      //   const path = view.toLowerCase() === 'home' ? '/' : `/${view.toLowerCase()}`;
+      //   navigate(path, { state: { filter } });
+      // };
+      // So calling onNavigate('Join') will navigate to /join. This is correct.
     });
   };
 

@@ -7,6 +7,7 @@ import EventsPage from './components/EventsPage';
 import TeamPage from './components/TeamPage';
 import AboutPage from './components/AboutPage';
 import GalleryPage from './components/GalleryPage';
+import JoinPage from './components/JoinPage';
 import CustomCursor from './components/CustomCursor';
 import { fetchCampusUpdates } from './services/geminiService';
 import { CampusUpdate } from './types';
@@ -69,6 +70,7 @@ const MainContent: React.FC = () => {
             <Route path="/events" element={<EventsPageWrapper />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/join" element={<JoinPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
           

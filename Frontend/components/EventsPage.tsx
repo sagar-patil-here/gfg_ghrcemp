@@ -39,7 +39,7 @@ interface EventsPageProps {
   initialFilter?: 'Upcoming' | 'Past';
   }
 
-const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
+const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Upcoming' }) => {
   const [filter, setFilter] = useState<'Upcoming' | 'Past'>(initialFilter);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 

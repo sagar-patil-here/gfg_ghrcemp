@@ -95,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
               href={`/${item.toLowerCase()}`}
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick(item, item === 'Events' ? 'Past' : undefined);
+                handleNavClick(item, item === 'Events' ? 'Upcoming' : undefined);
               }}
               className={`hover:text-[#00df9a] transition-colors duration-300 relative group ${
                 isActive(item) ? 'text-[#00df9a]' : ''
@@ -170,7 +170,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
                   href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleNavClick(item, item === 'Events' ? 'Past' : undefined);
+                    handleNavClick(item, item === 'Events' ? 'Upcoming' : undefined);
                   }}
                   className={`text-left text-lg font-medium uppercase tracking-wider transition-colors duration-300 ${
                     isActive(item) 

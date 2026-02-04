@@ -48,6 +48,18 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
     setFilter(initialFilter);
   }, [initialFilter]);
 
+  // Load Luma script dynamically
+  useEffect(() => {
+    const scriptId = 'luma-checkout';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://embed.lu.ma/checkout-button.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   const filteredEvents = MOCK_EVENTS.filter(e => e.status === filter);
 
   return (
@@ -87,6 +99,58 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
             ))}
           </div>
         </div>
+
+        {/* Featured Upcoming Event (Luma) */}
+        {filter === 'Upcoming' && (
+          <div className="mb-16 w-full animate-[fadeIn_0.5s_ease-out]">
+            <div className="relative overflow-hidden rounded-2xl bg-[#141414] border border-[#00df9a] p-8 md:p-12 shadow-[0_0_30px_rgba(0,223,154,0.15)] flex flex-col items-center text-center group">
+              
+              {/* Pulsing Glow Background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00df9a]/10 via-transparent to-[#00df9a]/10 opacity-20 animate-pulse pointer-events-none" />
+              
+              <span className="inline-block px-4 py-1 rounded-full bg-[#00df9a]/20 text-[#00df9a] text-xs font-bold uppercase tracking-[0.2em] mb-6 border border-[#00df9a]/30">
+                Flagship Initiative
+              </span>
+              
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+                Dive Into <span className="text-[#00df9a]">DSA 2.0</span> EP.3
+              </h2>
+              
+              <div className="flex flex-col md:flex-row gap-4 md:gap-8 mb-8 text-sm font-mono text-gray-300">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#00df9a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  Feb 7 • 9:30 AM
+                </span>
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#00df9a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  GHRCEM Pune
+                </span>
+              </div>
+              
+              <p className="text-gray-400 max-w-2xl text-lg mb-10 leading-relaxed">
+                Starting from absolute basics to advanced concepts. Build a strong foundation in Data Structures and Algorithms with hands-on practice and guided problem solving. Beginner friendly!
+              </p>
+
+              <a
+                href="https://luma.com/event/evt-yTg3pNT3BOsuxRK"
+                className="luma-checkout--button relative overflow-hidden inline-flex items-center justify-center px-8 py-4 !bg-[#f3f3f3] !text-black font-bold text-sm uppercase tracking-wider hover:!bg-[#00df9a] hover:scale-105 transition-all duration-300 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(0,223,154,0.4)] z-10"
+                data-luma-action="checkout"
+                data-luma-event-id="evt-yTg3pNT3BOsuxRK"
+              >
+                <span className="relative z-10">Register for Event</span>
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+              </a>
+
+              <style>{`
+                @keyframes shimmer {
+                  100% {
+                    transform: translateX(100%);
+                  }
+                }
+              `}</style>
+            </div>
+          </div>
+        )}
 
         {/* Events Grid */}
         <div className="grid grid-cols-1 gap-6">
@@ -144,11 +208,9 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialFilter = 'Past' }) => {
           ))}
         </div>
 
-        {filteredEvents.length === 0 && (
+        {filteredEvents.length === 0 && filter !== 'Upcoming' && (
           <div className="text-center py-24 text-gray-500 font-mono">
-            {filter === 'Upcoming' 
-              ? 'Currently no upcoming event scheduled.' 
-              : 'No events found in this category.'}
+            No events found in this category.
           </div>
         )}
       </div>
